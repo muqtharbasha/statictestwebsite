@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Static Website</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <script>
+        window.onload = function () {
+            // Replace this with the actual S3 resource URL (publicly accessible JSON file)
+            let s3Url = "https://muqthars3bucket2.s3.us-east-1.amazonaws.com/quotes.json"; 
+            
+            readJsonFile(s3Url, function (QuoteJson) {
+                let QuoteObj = JSON.parse(QuoteJson);
+                document.getElementById("Quote").innerHTML =
+                    "<i>" + QuoteObj.message + "</i>";
+            });
+        }
+
+        function readJsonFile(file, callback) {
+            let rawFile = new XMLHttpRequest();
+            rawFile.overrideMimeType("application/json");
+            rawFile.open("GET", file, true);
+            rawFile.onreadystatechange = function () {
+                if (rawFile.readyState === 4 && rawFile.status === 200) {
+                    callback(rawFile.responseText);
+                }
+            }
+            rawFile.send(null);
+        }
+    </script>
+    <header>
+        <h1>Welcome to My Static Website</h1>
+        <h2>Data displaying from - S3 Bucket 2 : - Quote of the Day</h2>
+        <div id="Quote">Loading quote...</div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="error.html">Error Page</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h2>About This Website</h2>
+        <p>This is a simple static website created for demonstration purposes.</p>
+    </main>
+    <footer>
+        <p>&copy; 2024 My Static Website</p>
+    </footer>
+</body>
+</html>
